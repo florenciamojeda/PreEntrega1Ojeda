@@ -1,34 +1,65 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+
 import ItemList from "./ItemList";
-import getProducts from "../../data/getProducts";
-import { useParams } from "react-router-dom"
-import "./itemListContainer.css"
+import db from "../../db/db";
+
+import "./itemListContainer.css";
 
 const ItemListContainer = ({ saludo }) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const { idCategory } = useParams()
+  const { idCategory } = useParams();
+
+  const getProducts = async () => {
+    try {
+      const dataDb = await getDocs(collection(db, "products"));
+
+      const data = dataDb.docs.map((productDb) => {
+        return { id: productDb.id, ...productDb.data() };
+      });
+
+      setProducts(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const getProductsByCategory = async () => {
+    const q = query(
+      collection(db, "products"),
+      where("category", "==", idCategory)
+    );
+
+    const dataDb = await getDocs(q);
+
+    const data = dataDb.docs.map((productDb) => {
+      return { id: productDb.id, ...productDb.data() };
+    });
+
+    setProducts(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    getProducts
-      .then((respuesta) => {
-        if(idCategory){
-          //filtrar los productos
-          const newProducts = respuesta.filter((producto)=> producto.category === idCategory )
-          setProducts(newProducts)
-        }else{
-          //devolver todos los productos
-          setProducts(respuesta)
-        }
-      })
-      .catch((error) => console.log(error))
-      .finally(() => console.log("Finalizo la promesa"));
+    if (idCategory) {
+      getProductsByCategory();
+    } else {
+      getProducts();
+    }
   }, [idCategory]);
 
   return (
     <div className="item-list-container">
       <h2 className="title-items">{saludo}</h2>
-      <ItemList products={products} />
+      {loading ? (
+        <div className="loading-screen">cargando...</div>
+      ) : (
+        <ItemList products={products} />
+      )}
     </div>
   );
 };

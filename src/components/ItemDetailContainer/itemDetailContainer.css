@@ -1,11 +1,11 @@
 .item-detail{
-    width: 100%;
+    width: 35%;
     display: flex;
-    padding: 100px 10px;
+    padding: 100px 30px;
   }
   
   .info-detail{
-    width: 50%;
+    width: 45%;
     display: flex;
     flex-direction: column;
     padding-left: 10%;
@@ -19,7 +19,6 @@
     font-style: unset;
   }
   .image-detail{
-    width: 50%;
-    display: flex;
+    width: 50px;
     justify-content: center;
   }
