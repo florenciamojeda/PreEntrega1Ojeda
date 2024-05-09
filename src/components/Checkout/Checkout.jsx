@@ -16,7 +16,10 @@ const Checkout = () => {
     name: "",
     phone: "",
     email: "",
+    email2: "",
+    
   });
+  
   const [idOrder, setIdOrder] = useState(null);
   const { cart, totalPrice, clearCart } = useContext(CartContext);
 
@@ -25,7 +28,7 @@ const Checkout = () => {
   };
 
   const handleSubmit = async (event) => {
-    //le damos formato a la orden
+    
     event.preventDefault();
     const order = {
       user: { ...dataForm },
@@ -33,7 +36,9 @@ const Checkout = () => {
       total: totalPrice(),
     };
     //validar los campos del formulario
+    
     const response = await validateForm(dataForm);
+    
     if (response.status === "success") {
       uploadOrder(order);
     } else {

@@ -36,7 +36,16 @@ const FormularioCheckout = ({ dataForm, handleChangeInput, handleSubmit }) => {
           onChange={handleChangeInput}
         />
       </div>
-
+      <div className="inputs-form">
+        <label htmlFor="email2">Repetir el email:</label>
+        <input
+          type="email"
+          id="email2"
+          name="email2"
+          value={dataForm.email2}
+          onChange={handleChangeInput}
+        />
+      </div>
       <div className="inputs-form">
         <button className="submit" type="submit">Enviar Orden</button>
       </div>

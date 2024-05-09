@@ -9,7 +9,10 @@ let userSchema = object({
         .required("El telefono email es requerido"),
   email: string("El campo email debe ser de tipo texto")
         .email("El campo email debe tener formato email")
-        .required("El campo email es requerido")
+        .required("El campo email es requerido"),
+  email2: string("El campo Repetir email debe ser de tipo texto")
+        .email("El campo Repetir email debe tener formato email")
+        .required("El campo Repetir email es requerido")
 })
 
 const validateForm = async (dataForm) => {
